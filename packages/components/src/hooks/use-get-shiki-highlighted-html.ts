@@ -11,9 +11,14 @@ const useGetShikiHighlightedHtml = (
 ): string | undefined => {
   const htmlOrPromise = getShikiHighlightedHtml(props);
 
-  const [html, setHtml] = useState<string | undefined>(
-    htmlOrPromise instanceof Promise ? undefined : htmlOrPromise
-  );
+  // Always start `undefined` so the server (and the first client render that
+  // hydrates it) emit the plain, unhighlighted code. If we seeded this with the
+  // synchronously-highlighted HTML, the server and client could serialize the
+  // same Shiki theme colors with different letter-case (e.g. #ffffff vs
+  // #FFFFFF), producing a React hydration mismatch. The layout effect below then
+  // sets the highlighted HTML on the client before paint, so the flash is
+  // negligible while SSR and the initial CSR render stay identical at hydration.
+  const [html, setHtml] = useState<string | undefined>(undefined);
 
   useIsomorphicLayoutEffect(() => {
     if (!(htmlOrPromise instanceof Promise)) {
