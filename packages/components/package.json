@@ -15,7 +15,42 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./navbar": {
+      "types": "./dist/components/navbar/index.d.ts",
+      "import": "./dist/components/navbar/navbar.js",
+      "default": "./dist/components/navbar/navbar.js"
+    },
+    "./sidebar-nav": {
+      "types": "./dist/components/sidebar-nav/index.d.ts",
+      "import": "./dist/components/sidebar-nav/sidebar-nav.js",
+      "default": "./dist/components/sidebar-nav/sidebar-nav.js"
+    },
+    "./toc-nav": {
+      "types": "./dist/components/toc-nav/index.d.ts",
+      "import": "./dist/components/toc-nav/toc-nav.js",
+      "default": "./dist/components/toc-nav/toc-nav.js"
+    },
+    "./footer": {
+      "types": "./dist/components/footer/index.d.ts",
+      "import": "./dist/components/footer/footer.js",
+      "default": "./dist/components/footer/footer.js"
+    },
+    "./prev-next": {
+      "types": "./dist/components/prev-next/index.d.ts",
+      "import": "./dist/components/prev-next/prev-next.js",
+      "default": "./dist/components/prev-next/prev-next.js"
+    },
+    "./version-switcher": {
+      "types": "./dist/components/version-switcher/index.d.ts",
+      "import": "./dist/components/version-switcher/version-switcher.js",
+      "default": "./dist/components/version-switcher/version-switcher.js"
+    },
+    "./docs-search": {
+      "types": "./dist/components/docs-search/index.d.ts",
+      "import": "./dist/components/docs-search/docs-search.js",
+      "default": "./dist/components/docs-search/docs-search.js"
+    }
   },
   "files": [
     "dist",
