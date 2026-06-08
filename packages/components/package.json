@@ -79,8 +79,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "tsc && vite build && pnpm build:css",
+    "dev": "pnpm build:css && vite build --watch",
+    "build": "pnpm clean && tsc && vite build && pnpm build:css",
     "build:css": "npx @tailwindcss/cli -i ./src/styles.css -o ./dist/styles.css --minify",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run clean && npm run build",

@@ -36,6 +36,12 @@ export default defineConfig({
     },
   },
   build: {
+    // The canonical stylesheet (dist/styles.css) is produced by the separate
+    // `build:css` step, not by Vite. Letting Vite empty the output dir on every
+    // (watch) rebuild would delete that file and leave consumers importing a
+    // missing `@doxa/components/styles.css`. Keep the dir intact; `build` runs
+    // `clean` explicitly for a fresh production output.
+    emptyOutDir: false,
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       formats: ["es"],
