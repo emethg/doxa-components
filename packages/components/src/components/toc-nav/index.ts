@@ -1,1 +1,1 @@
-export { TocNav, type TocNavProps, type TocEntry } from "./toc-nav";
+export { type TocEntry, TocNav, type TocNavProps } from "./toc-nav";

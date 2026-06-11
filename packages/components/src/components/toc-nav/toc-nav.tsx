@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
 
 export interface TocEntry {
@@ -15,15 +15,20 @@ export interface TocNavProps {
 
 // Right-hand "On this page" table of contents with scroll-spy highlighting.
 export function TocNav({ items }: TocNavProps) {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
 
-  React.useEffect(() => {
-    if (items.length === 0) return;
-    const firstEl = document.getElementById(items[0]!.id);
+  useEffect(() => {
+    const firstItem = items[0];
+    if (!firstItem) {
+      return;
+    }
+    const firstEl = document.getElementById(firstItem.id);
     let root: Element | null = firstEl?.parentElement ?? null;
     while (root && root !== document.body) {
       const overflowY = getComputedStyle(root).overflowY;
-      if (overflowY === "auto" || overflowY === "scroll") break;
+      if (overflowY === "auto" || overflowY === "scroll") {
+        break;
+      }
       root = root.parentElement;
     }
     const observer = new IntersectionObserver(
@@ -35,34 +40,42 @@ export function TocNav({ items }: TocNavProps) {
           }
         }
       },
-      { root: root === document.body ? null : root, rootMargin: "0px 0px -75% 0px", threshold: 0 },
+      {
+        root: root === document.body ? null : root,
+        rootMargin: "0px 0px -75% 0px",
+        threshold: 0,
+      }
     );
     for (const item of items) {
       const el = document.getElementById(item.id);
-      if (el) observer.observe(el);
+      if (el) {
+        observer.observe(el);
+      }
     }
     return () => observer.disconnect();
   }, [items]);
 
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    return null;
+  }
 
   return (
     <aside className="hidden w-64 shrink-0 lg:block">
       <div className="sticky top-0 p-4">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <p className="mb-2 font-semibold text-muted-foreground text-xs uppercase tracking-wide">
           On this page
         </p>
         <ul className="space-y-1 text-sm">
           {items.map((item) => (
             <li key={item.id} style={{ paddingLeft: (item.depth - 2) * 12 }}>
               <a
-                href={`#${item.id}`}
                 className={cn(
                   "block transition-colors",
                   activeId === item.id
                     ? "font-medium text-primary"
-                    : "text-muted-foreground hover:text-foreground",
+                    : "text-muted-foreground hover:text-foreground"
                 )}
+                href={`#${item.id}`}
               >
                 {item.title}
               </a>

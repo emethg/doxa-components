@@ -1,1 +1,1 @@
-export { PrevNext, type PrevNextProps, type PageLink } from "./prev-next";
+export { type PageLink, PrevNext, type PrevNextProps } from "./prev-next";
