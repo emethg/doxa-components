@@ -85,16 +85,27 @@ export interface SidebarNavProps {
   currentPath: string;
   /** Link component to render (e.g. next/link). Defaults to a plain anchor. */
   linkComponent?: ElementType;
+  /**
+   * Extra classes merged onto the root `<nav>` — used by the host app to control
+   * responsive visibility (e.g. hide on mobile, where it renders in a drawer).
+   */
+  className?: string;
 }
 
 export function SidebarNav({
   tree,
   currentPath,
   linkComponent = "a",
+  className,
 }: SidebarNavProps) {
   const current = currentPath.replace(/^\//, "");
   return (
-    <nav className="w-64 shrink-0 overflow-y-auto border-r p-4">
+    <nav
+      className={cn(
+        "w-64 shrink-0 overflow-y-auto border-r p-4",
+        className,
+      )}
+    >
       <NavTree nodes={tree} current={current} linkComponent={linkComponent} />
     </nav>
   );

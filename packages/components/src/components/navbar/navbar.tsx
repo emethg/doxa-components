@@ -40,6 +40,11 @@ export interface NavbarProps {
   themeToggle?: ReactNode;
   /** Search control, injected by the host app (carries the client boundary). */
   search?: ReactNode;
+  /**
+   * Leading slot rendered before the logo — used by the host app to inject a
+   * mobile navigation trigger (hidden on larger viewports by the app).
+   */
+  leading?: ReactNode;
 }
 
 export function Navbar({
@@ -52,25 +57,27 @@ export function Navbar({
   linkComponent: L = "a",
   themeToggle,
   search,
+  leading,
 }: NavbarProps) {
   const src = logoSrc(logo);
   const showTabs = tabs.filter((t) => t.name).length > 1;
 
   return (
     <header className="z-30 shrink-0 border-b bg-background/80 backdrop-blur">
-      <div className="flex h-16 items-center gap-4 px-6">
-        <L href="/" className="flex items-center gap-2 font-semibold">
+      <div className="flex h-16 items-center gap-3 px-4 sm:gap-4 sm:px-6">
+        {leading}
+        <L href="/" className="flex min-w-0 items-center gap-2 font-semibold">
           {src ? (
             <img src={src} alt={siteName} className="h-7 w-auto" />
           ) : (
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
               {siteName.charAt(0).toUpperCase()}
             </div>
           )}
           <span className="truncate">{siteName}</span>
         </L>
 
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-2 sm:gap-3">
           {search}
           {versions.length > 1 && (
             <VersionSwitcher items={versions} linkComponent={L} />
@@ -99,7 +106,7 @@ export function Navbar({
       </div>
 
       {showTabs && (
-        <div className="flex gap-1 overflow-x-auto px-6">
+        <div className="flex gap-1 overflow-x-auto px-4 sm:px-6">
           {tabs.map((t) => (
             <L
               key={t.name}
