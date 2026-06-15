@@ -10,11 +10,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-primary: rgb(22, 101, 52);
-  --color-primary-light: rgb(240, 249, 244);
-  --color-primary-dark: rgb(45, 90, 61);
+  --color-primary: rgb(37, 99, 235);
+  --color-primary-light: rgb(219, 234, 254);
+  --color-primary-dark: rgb(29, 78, 216);
   --color-tooltip-foreground: rgb(255, 255, 255);
-  --color-background-dark: rgb(14, 14, 15);
+  --color-background-dark: rgb(8, 10, 20);
 }
 
 @layer base {
