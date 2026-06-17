@@ -23,7 +23,7 @@ export * from "./tabs";
 export * from "./tile";
 export * from "./toc-nav";
 export * from "./tooltip";
-export * from "./version-switcher";
 export * from "./tree";
 export * from "./update";
+export * from "./version-switcher";
 export * from "./view";

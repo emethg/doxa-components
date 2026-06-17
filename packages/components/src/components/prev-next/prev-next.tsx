@@ -1,5 +1,5 @@
-import type { ElementType } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { ElementType } from "react";
 
 export interface PageLink {
   title: string;
@@ -13,17 +13,23 @@ export interface PrevNextProps {
   linkComponent?: ElementType;
 }
 
-export function PrevNext({ prev, next, linkComponent: L = "a" }: PrevNextProps) {
-  if (!prev && !next) return null;
+export function PrevNext({
+  prev,
+  next,
+  linkComponent: L = "a",
+}: PrevNextProps) {
+  if (!(prev || next)) {
+    return null;
+  }
   return (
     <div className="mt-12 grid grid-cols-2 gap-4 border-t pt-6">
       <div>
         {prev && (
           <L
-            href={`/${prev.path}`}
             className="group flex flex-col rounded-lg border p-4 transition-colors hover:border-primary/50"
+            href={`/${prev.path}`}
           >
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1 text-muted-foreground text-xs">
               <ArrowLeft className="size-3" />
               Previous
             </span>
@@ -36,10 +42,10 @@ export function PrevNext({ prev, next, linkComponent: L = "a" }: PrevNextProps) 
       <div>
         {next && (
           <L
-            href={`/${next.path}`}
             className="group flex flex-col items-end rounded-lg border p-4 text-right transition-colors hover:border-primary/50"
+            href={`/${next.path}`}
           >
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1 text-muted-foreground text-xs">
               Next
               <ArrowRight className="size-3" />
             </span>

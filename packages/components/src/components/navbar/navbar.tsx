@@ -1,9 +1,11 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "@/utils/cn";
 import {
   VersionSwitcher,
   type VersionSwitcherItem,
 } from "@/components/version-switcher";
+import { cn } from "@/utils/cn";
+
+const ABSOLUTE_URL_RE = /^https?:\/\//;
 
 interface NavbarLink {
   label: string;
@@ -24,7 +26,7 @@ interface TabItem {
 // host app, so only use a logo image when it's an absolute URL.
 function logoSrc(logo: Logo): string | null {
   const v = typeof logo === "string" ? logo : logo?.light;
-  return v && /^https?:\/\//.test(v) ? v : null;
+  return v && ABSOLUTE_URL_RE.test(v) ? v : null;
 }
 
 export interface NavbarProps {
@@ -66,11 +68,12 @@ export function Navbar({
     <header className="z-30 shrink-0 border-b bg-background/80 backdrop-blur">
       <div className="flex h-16 items-center gap-3 px-4 sm:gap-4 sm:px-6">
         {leading}
-        <L href="/" className="flex min-w-0 items-center gap-2 font-semibold">
+        <L className="flex min-w-0 items-center gap-2 font-semibold" href="/">
           {src ? (
-            <img src={src} alt={siteName} className="h-7 w-auto" />
+            // biome-ignore lint/correctness/useImageSize: logo is a remote image of unknown intrinsic size, sized responsively via CSS (h-7 w-auto).
+            <img alt={siteName} className="h-7 w-auto" src={src} />
           ) : (
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary font-bold text-primary-foreground text-sm">
               {siteName.charAt(0).toUpperCase()}
             </div>
           )}
@@ -86,9 +89,9 @@ export function Navbar({
 
           {config?.links?.map((l) => (
             <a
-              key={l.href}
+              className="hidden text-muted-foreground text-sm hover:text-foreground md:inline"
               href={l.href}
-              className="hidden text-sm text-muted-foreground hover:text-foreground md:inline"
+              key={l.href}
             >
               {l.label}
             </a>
@@ -96,8 +99,8 @@ export function Navbar({
 
           {config?.primary && (
             <a
+              className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground text-sm"
               href={config.primary.href}
-              className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground"
             >
               {config.primary.label}
             </a>
@@ -109,14 +112,14 @@ export function Navbar({
         <div className="flex gap-1 overflow-x-auto px-4 sm:px-6">
           {tabs.map((t) => (
             <L
-              key={t.name}
-              href={`/${t.firstPath}`}
               className={cn(
-                "whitespace-nowrap border-b-2 px-2 py-2 text-sm font-medium transition-colors",
+                "whitespace-nowrap border-b-2 px-2 py-2 font-medium text-sm transition-colors",
                 t.name === activeTabName
                   ? "border-primary text-foreground"
-                  : "border-transparent text-muted-foreground hover:text-foreground",
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               )}
+              href={`/${t.firstPath}`}
+              key={t.name}
             >
               {t.name}
             </L>

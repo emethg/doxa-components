@@ -1,1 +1,5 @@
-export { DocsSearch, type DocsSearchProps, type DocsSearchItem } from "./docs-search";
+export {
+  DocsSearch,
+  type DocsSearchItem,
+  type DocsSearchProps,
+} from "./docs-search";

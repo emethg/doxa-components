@@ -1,6 +1,8 @@
 import type { ElementType } from "react";
 import { cn } from "@/utils/cn";
 
+const LEADING_SLASH_RE = /^\//;
+
 export type SidebarNode =
   | { type: "link"; title: string; path: string; method?: string }
   | { type: "group"; title: string; children: SidebarNode[] };
@@ -18,9 +20,9 @@ function MethodBadge({ method }: { method: string }) {
   return (
     <span
       className={cn(
-        "inline-flex w-12 shrink-0 items-center rounded px-1 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wide",
+        "inline-flex w-12 shrink-0 items-center rounded px-1 py-0.5 font-bold text-[10px] uppercase leading-none tracking-wide",
         "bg-muted/60",
-        METHOD_STYLES[method] ?? "text-muted-foreground",
+        METHOD_STYLES[method] ?? "text-muted-foreground"
       )}
     >
       {method}
@@ -41,18 +43,18 @@ function NavTree({
 }) {
   return (
     <ul className={cn(depth > 0 && "ml-3 border-l pl-2")}>
-      {nodes.map((node, i) => {
+      {nodes.map((node) => {
         if (node.type === "group") {
           return (
-            <li key={`g-${i}`} className="mt-4 first:mt-0">
-              <p className="mb-1 px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <li className="mt-4 first:mt-0" key={`group-${node.title}`}>
+              <p className="mb-1 px-2 font-semibold text-muted-foreground text-xs uppercase tracking-wide">
                 {node.title}
               </p>
               <NavTree
-                nodes={node.children}
                 current={current}
-                linkComponent={L}
                 depth={depth}
+                linkComponent={L}
+                nodes={node.children}
               />
             </li>
           );
@@ -61,13 +63,13 @@ function NavTree({
         return (
           <li key={node.path}>
             <L
-              href={`/${node.path}`}
               className={cn(
                 "flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors",
                 active
                   ? "bg-primary/10 font-medium text-primary"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
+              href={`/${node.path}`}
             >
               {node.method && <MethodBadge method={node.method} />}
               <span>{node.title}</span>
@@ -98,15 +100,12 @@ export function SidebarNav({
   linkComponent = "a",
   className,
 }: SidebarNavProps) {
-  const current = currentPath.replace(/^\//, "");
+  const current = currentPath.replace(LEADING_SLASH_RE, "");
   return (
     <nav
-      className={cn(
-        "w-64 shrink-0 overflow-y-auto border-r p-4",
-        className,
-      )}
+      className={cn("w-64 shrink-0 overflow-y-auto border-r p-4", className)}
     >
-      <NavTree nodes={tree} current={current} linkComponent={linkComponent} />
+      <NavTree current={current} linkComponent={linkComponent} nodes={tree} />
     </nav>
   );
 }
